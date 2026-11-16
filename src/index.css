@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/* Dark mode is class-based so the white theme stays the default. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f6f4ef;
+  --surface: #fdfcfa;
+  --subtle: #eeebe4;
+  --fg: #1c1b19;
+  --muted: #6b675f;
+  --line: #e0dcd2;
+  --accent: #0066cc;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #000000;
+  --surface: #1c1c1e;
+  --subtle: #141415;
+  --fg: #f5f5f7;
+  --muted: #a1a1a6;
+  --line: #2c2c2e;
+  --accent: #2997ff;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-subtle: var(--subtle);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+section[id] {
+  scroll-margin-top: 4.5rem;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Scroll reveal: only hidden when JS is running, and never with reduced motion. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.js .reveal.in-view {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Smooth open/close for expandable project details. */
+.expand {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.expand[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+.expand > div {
+  overflow: hidden;
+}
+
+@media print {
+  header,
+  footer {
+    display: none;
+  }
+}
